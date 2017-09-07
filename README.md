@@ -6,10 +6,11 @@ This repo should be cloned into a folder called label_detector in the src/ folde
 
 ## What's Inside
 The project has been organized using the catkin workspace approach and catkin's CMake macros.
-
+### Python jupyter notebook rough proto
+`LabelDetection.ipynb`: Rough prototype of the computer vision pipeline algorithm itself; used for rapid experimentation with opencv. Path to image file directory may need to be modified to `test/imagefiles/` in order to run this after cloning the repo.
 ### Executables Generated
-1. label\_detector\_node: Primary node that subscribes to a (hardcoded) image topic, detects labels, posts a custom topic of detection parameters, and shows an opencv window with the image annotated. The node may be tuned using rqt_reconfigure.
-2. test\_image\_publisher: Roughly written image publishing node hardcoded to publish the two test images back and forth at a 0.5Hz rate. Used to demonstrate a basic system.
+1. `label_detector_node`: Primary node that subscribes to a (hardcoded) image topic, detects labels, posts a custom topic of detection parameters, and shows an opencv window with the image annotated. The node may be tuned using rqt_reconfigure.
+2. `test_image_publisher`: Roughly written image publishing node hardcoded to publish the two test images back and forth at a 0.5Hz rate. Used to demonstrate a basic system.
 
 To build just this package's executables, type this at the catkin workspace top-level directory:
 ```
