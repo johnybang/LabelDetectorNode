@@ -39,9 +39,10 @@ $ rosrun rqt_reconfigure rqt_reconfigure
 
 ## Potential Further Work
 1. Go through TODO comments to swap in identified cv::cuda versions of opencv routines.
-2. Figure out why the detections are slightly biased away from the origin as scaled_height_ decreases.
-3. Add a rostest+gtest for automated testing of label_detector_node.
-4. Profile the cpu cycle/time contribution of major algorithm subroutines; confirm python jupyter notebook analysis' preliminary relative running time analysis.
-5. Consider swapping findContours for a Hough based approach.
-6. Consider additional confidence measurement components: rectangularity, size, color histogram, etc.
-7. Apply random relevant random transformations (rotation, scale, illumination) along with transformations to the ground truth to perform further robustness testing. Maybe add dynamic_reconfigure rotation parameter for experimentation.
+2. Add file/function headers with doxygen tags if desired.
+3. Figure out why the detections are slightly biased away from the origin as scaled_height_ decreases.
+4. Add a rostest+gtest for automated testing of label_detector_node.
+5. Profile the cpu cycle/time contribution of major algorithm subroutines; confirm python jupyter notebook analysis' preliminary relative running time analysis.
+6. Consider swapping findContours for a Hough based approach.
+7. Consider additional confidence measurement components: rectangularity, size, color histogram, etc.
+8. Apply random relevant random transformations (rotation, scale, illumination) along with transformations to the ground truth to perform further robustness testing. Maybe add dynamic_reconfigure rotation parameter for experimentation.
