@@ -1,3 +1,6 @@
+#ifndef CSVROW_H_
+#define CSVROW_H_
+
 #include <iterator>
 #include <iostream>
 #include <fstream>
@@ -51,3 +54,5 @@ std::istream& operator>>(std::istream& str, jyb::CSVRow& data)
 	data.readNextRow(str);
 	return str;
 }
+
+#endif // CSVROW_H_

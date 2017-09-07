@@ -1,3 +1,6 @@
+#ifndef DYNAMIC_LABEL_DETECTOR_NODE_H_
+#define DYNAMIC_LABEL_DETECTOR_NODE_H_
+
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/image_encodings.h>
@@ -26,3 +29,5 @@ private:
 };
 
 } // namespace jyb
+
+#endif // DYNAMIC_LABEL_DETECTOR_NODE_H_
