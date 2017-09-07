@@ -21,38 +21,54 @@
 
 
 static const std::string OPENCV_WINDOW = "label_detector_node Window";
-static jyb::LabelDetector labeldetector;
 
-void callback(label_detector::DetectorConfig &config, uint32_t level) {
-	ROS_INFO("Reconfigure Request: %d %d %d %f %s %f %f %f %f",
-	         config.scaled_height, config.v_thresh, config.s_thresh,
-	         config.median_ksize_ratio, config.use_rectangles?"True":"False",
-	         config.tophat_ratio, config.close_ratio,
-	         config.open_width_ratio, config.open_height_ratio);
+class DynamicLabelDetector
+{
+	dynamic_reconfigure::Server<label_detector::DetectorConfig> server_;
 
-	labeldetector.scaled_height_ = config.scaled_height;
-	labeldetector.v_thresh_ = config.v_thresh;
-	labeldetector.s_thresh_ = config.s_thresh;
-	labeldetector.median_ksize_ratio_ = config.median_ksize_ratio;
-	if (config.use_rectangles)
+public:
+	jyb::LabelDetector detector_;
+
+	DynamicLabelDetector()
 	{
-		labeldetector.tophat_param_.shape = cv::MORPH_RECT;
-		labeldetector.close_param_.shape = cv::MORPH_RECT;
-		labeldetector.open_param_.shape = cv::MORPH_RECT;
+		dynamic_reconfigure::Server<label_detector::DetectorConfig>::CallbackType f;
+		f = boost::bind(&DynamicLabelDetector::reconfigureCb, this, _1, _2);
+		server_.setCallback(f);
 	}
-	else
+
+	void reconfigureCb(label_detector::DetectorConfig &config, uint32_t level)
 	{
-		labeldetector.tophat_param_.shape = cv::MORPH_ELLIPSE;
-		labeldetector.close_param_.shape = cv::MORPH_ELLIPSE;
-		labeldetector.open_param_.shape = cv::MORPH_ELLIPSE;
+		ROS_INFO("Reconfigure Request: %d %d %d %f %s %f %f %f %f",
+	           config.scaled_height, config.v_thresh, config.s_thresh,
+	           config.median_ksize_ratio, config.use_rectangles?"True":"False",
+	           config.tophat_ratio, config.close_ratio,
+	           config.open_width_ratio, config.open_height_ratio);
+
+		detector_.scaled_height_ = config.scaled_height;
+		detector_.v_thresh_ = config.v_thresh;
+		detector_.s_thresh_ = config.s_thresh;
+		detector_.median_ksize_ratio_ = config.median_ksize_ratio;
+		if (config.use_rectangles)
+		{
+			detector_.tophat_param_.shape = cv::MORPH_RECT;
+			detector_.close_param_.shape = cv::MORPH_RECT;
+			detector_.open_param_.shape = cv::MORPH_RECT;
+		}
+		else
+		{
+			detector_.tophat_param_.shape = cv::MORPH_ELLIPSE;
+			detector_.close_param_.shape = cv::MORPH_ELLIPSE;
+			detector_.open_param_.shape = cv::MORPH_ELLIPSE;
+		}
+		detector_.tophat_param_.width_ratio = config.tophat_ratio;
+		detector_.tophat_param_.height_ratio = config.tophat_ratio;
+		detector_.close_param_.width_ratio = config.close_ratio;
+		detector_.close_param_.height_ratio = config.close_ratio;
+		detector_.open_param_.width_ratio = config.open_width_ratio;
+		detector_.open_param_.height_ratio = config.open_height_ratio;
 	}
-	labeldetector.tophat_param_.width_ratio = config.tophat_ratio;
-	labeldetector.tophat_param_.height_ratio = config.tophat_ratio;
-	labeldetector.close_param_.width_ratio = config.close_ratio;
-	labeldetector.close_param_.height_ratio = config.close_ratio;
-	labeldetector.open_param_.width_ratio = config.open_width_ratio;
-	labeldetector.open_param_.height_ratio = config.open_height_ratio;
-}
+
+};
 
 
 class LabelDetectorNode
@@ -62,6 +78,7 @@ class LabelDetectorNode
 	image_transport::Subscriber image_sub_;
 	image_transport::Publisher image_pub_;
 	ros::Publisher labels_pub_;
+	DynamicLabelDetector dynamic_detector_;
 
 public:
 
@@ -96,7 +113,7 @@ public:
 		}
 
 		std::vector<jyb::LabelDetector::Label> labels;
-		labeldetector.FindLabels(cv_ptr->image, labels);
+		dynamic_detector_.detector_.FindLabels(cv_ptr->image, labels);
 
 		// Populates and publishes a label detections message
 		label_detector::Labels labels_msg;
@@ -129,13 +146,6 @@ public:
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "label_detector_node");
-
-	dynamic_reconfigure::Server<label_detector::DetectorConfig> server;
-	dynamic_reconfigure::Server<label_detector::DetectorConfig>::CallbackType f;
-
-
-	f = boost::bind(&callback, _1, _2);
-	server.setCallback(f);
 
 	LabelDetectorNode ic;
 
