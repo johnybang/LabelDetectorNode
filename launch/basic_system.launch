@@ -1,0 +1,4 @@
+<launch>
+  <node name="label_detector_node" pkg="label_detector" type="label_detector_node" />
+  <node name="test_image_publisher" pkg="label_detector" type="test_image_publisher" />
+</launch>
