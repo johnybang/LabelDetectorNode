@@ -7,68 +7,18 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <dynamic_reconfigure/server.h>
 
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include "label_detector/DetectorConfig.h"
 #include "label_detector/Position.h"
 #include "label_detector/Label.h"
 #include "label_detector/Labels.h"
 
 #include "label_detector.h"
-
+#include "dynamic_label_detector.h"
 
 static const std::string OPENCV_WINDOW = "label_detector_node Window";
-
-class DynamicLabelDetector
-{
-	dynamic_reconfigure::Server<label_detector::DetectorConfig> server_;
-
-public:
-	jyb::LabelDetector detector_;
-
-	DynamicLabelDetector()
-	{
-		dynamic_reconfigure::Server<label_detector::DetectorConfig>::CallbackType f;
-		f = boost::bind(&DynamicLabelDetector::reconfigureCb, this, _1, _2);
-		server_.setCallback(f);
-	}
-
-	void reconfigureCb(label_detector::DetectorConfig &config, uint32_t level)
-	{
-		ROS_INFO("Reconfigure Request: %d %d %d %f %s %f %f %f %f",
-	           config.scaled_height, config.v_thresh, config.s_thresh,
-	           config.median_ksize_ratio, config.use_rectangles?"True":"False",
-	           config.tophat_ratio, config.close_ratio,
-	           config.open_width_ratio, config.open_height_ratio);
-
-		detector_.scaled_height_ = config.scaled_height;
-		detector_.v_thresh_ = config.v_thresh;
-		detector_.s_thresh_ = config.s_thresh;
-		detector_.median_ksize_ratio_ = config.median_ksize_ratio;
-		if (config.use_rectangles)
-		{
-			detector_.tophat_param_.shape = cv::MORPH_RECT;
-			detector_.close_param_.shape = cv::MORPH_RECT;
-			detector_.open_param_.shape = cv::MORPH_RECT;
-		}
-		else
-		{
-			detector_.tophat_param_.shape = cv::MORPH_ELLIPSE;
-			detector_.close_param_.shape = cv::MORPH_ELLIPSE;
-			detector_.open_param_.shape = cv::MORPH_ELLIPSE;
-		}
-		detector_.tophat_param_.width_ratio = config.tophat_ratio;
-		detector_.tophat_param_.height_ratio = config.tophat_ratio;
-		detector_.close_param_.width_ratio = config.close_ratio;
-		detector_.close_param_.height_ratio = config.close_ratio;
-		detector_.open_param_.width_ratio = config.open_width_ratio;
-		detector_.open_param_.height_ratio = config.open_height_ratio;
-	}
-
-};
 
 
 class LabelDetectorNode
@@ -78,7 +28,7 @@ class LabelDetectorNode
 	image_transport::Subscriber image_sub_;
 	image_transport::Publisher image_pub_;
 	ros::Publisher labels_pub_;
-	DynamicLabelDetector dynamic_detector_;
+	jyb::DynamicLabelDetector dynamic_detector_;
 
 public:
 
