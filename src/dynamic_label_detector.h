@@ -10,17 +10,23 @@ namespace jyb {
 
 class DynamicLabelDetector
 {
-	dynamic_reconfigure::Server<label_detector::DetectorConfig> server_;
-
 public:
-	jyb::LabelDetector detector_;
-
 	DynamicLabelDetector()
 	{
 		dynamic_reconfigure::Server<label_detector::DetectorConfig>::CallbackType f;
 		f = boost::bind(&DynamicLabelDetector::reconfigureCb, this, _1, _2);
 		server_.setCallback(f);
 	}
+
+	void FindLabels(cv::Mat &image,
+									std::vector<jyb::LabelDetector::Label> &labels)
+	{
+		detector_.FindLabels(image, labels);
+	}
+
+private:
+	dynamic_reconfigure::Server<label_detector::DetectorConfig> server_;
+	jyb::LabelDetector detector_;
 
 	void reconfigureCb(label_detector::DetectorConfig &config, uint32_t level)
 	{

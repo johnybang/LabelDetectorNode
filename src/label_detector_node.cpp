@@ -23,15 +23,7 @@ static const std::string OPENCV_WINDOW = "label_detector_node Window";
 
 class LabelDetectorNode
 {
-	ros::NodeHandle nh_;
-	image_transport::ImageTransport it_;
-	image_transport::Subscriber image_sub_;
-	image_transport::Publisher image_pub_;
-	ros::Publisher labels_pub_;
-	jyb::DynamicLabelDetector dynamic_detector_;
-
 public:
-
 	LabelDetectorNode() : it_(nh_)
 	{
 		image_sub_ = it_.subscribe("/static_image", 1,
@@ -49,6 +41,14 @@ public:
 		cv::destroyWindow(OPENCV_WINDOW);
 	}
 
+private:
+	ros::NodeHandle nh_;
+	image_transport::ImageTransport it_;
+	image_transport::Subscriber image_sub_;
+	image_transport::Publisher image_pub_;
+	ros::Publisher labels_pub_;
+	jyb::DynamicLabelDetector dynamic_detector_;
+
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
 		cv_bridge::CvImagePtr cv_ptr;
@@ -63,7 +63,7 @@ public:
 		}
 
 		std::vector<jyb::LabelDetector::Label> labels;
-		dynamic_detector_.detector_.FindLabels(cv_ptr->image, labels);
+		dynamic_detector_.FindLabels(cv_ptr->image, labels);
 
 		// Populates and publishes a label detections message
 		label_detector::Labels labels_msg;
