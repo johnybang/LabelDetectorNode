@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "label_detector_node");
 
-	LabelDetectorNode ic;
+	LabelDetectorNode node;
 
 	ros::spin();
 	return 0;
