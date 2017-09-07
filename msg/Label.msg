@@ -1,0 +1,5 @@
+label_detector/Position position
+float32 orientation
+float32 perimeter
+float32 area
+float32 confidence
