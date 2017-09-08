@@ -10,10 +10,10 @@ The project has been organized using the catkin workspace approach and catkin's 
 `LabelDetection.ipynb`: Rough prototype of the computer vision pipeline algorithm itself; used for rapid experimentation with opencv. Path to image file directory may need to be modified to `test/imagefiles/` in order to run this after cloning the repo.
 ### C++ Source files
 1. `src/main.cpp`: Entry point for primary output executable `label_detector_node`.
-2. `src/dynamic_label_detector_node(.cpp | .h)`: Wraps cv_bridge and message handling around dynamic label detector.
+2. `src/dynamic_label_detector_node.cpp` and `include/dynamic_label_detector_node.h`: Wraps cv_bridge and message handling around dynamic label detector.
 3. `src/dynamic_label_detector.cpp` and `include/dynamic_label_detector.h`: Wraps dynamic_reconfigure tunability around label detector. This is included in an exported project library.
 4. `src/label_detector.cpp` and `include/label_detector.h`: Implements the computer vision pipeline algorithms.
-5. `src/label_detector_debug.h`: For popping up lots of debug opencv image windows and messages depending on DEBUG #define flag.
+5. `include/label_detector_debug.h`: For popping up lots of debug opencv image windows and messages depending on DEBUG #define flag.
 6. `src/image_publisher.cpp`: Entry point (only file) for `test_image_publisher` executable.
 7. `test/test_label_detector.cpp`: Entry point for gtest unit test of `label_detector.cpp`.
 8. `test/csvrow.h`: CSV file reading helper class for reading in hand-annotated ground truth rectangle vertices for test.

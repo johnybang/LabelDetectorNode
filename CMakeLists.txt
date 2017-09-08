@@ -136,6 +136,7 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/label_detector.cpp
   src/dynamic_label_detector.cpp
+  src/dynamic_label_detector_node.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -146,8 +147,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/main.cpp
-  src/dynamic_label_detector_node.cpp)
+add_executable(${PROJECT_NAME}_node src/main.cpp)
 add_executable(test_image_publisher src/image_publisher.cpp)
 
 ## Rename C++ executable without prefix
