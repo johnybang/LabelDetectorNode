@@ -29,10 +29,10 @@ void DynamicLabelDetector::reconfigureCb(label_detector::DetectorConfig &config,
 																				 uint32_t level)
 {
 	ROS_INFO("Reconfigure Request: %d %d %d %f %s %f %f %f %f",
-					 config.scaled_height, config.v_thresh, config.s_thresh,
-					 config.median_ksize_ratio, config.use_rectangles?"True":"False",
-					 config.tophat_ratio, config.close_ratio,
-					 config.open_width_ratio, config.open_height_ratio);
+	         config.scaled_height, config.v_thresh, config.s_thresh,
+	         config.median_ksize_ratio, config.use_rectangles?"True":"False",
+	         config.tophat_ratio, config.close_ratio,
+	         config.open_width_ratio, config.open_height_ratio);
 
 	detector_.scaled_height_ = config.scaled_height;
 	detector_.v_thresh_ = config.v_thresh;

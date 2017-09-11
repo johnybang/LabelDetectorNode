@@ -16,13 +16,13 @@ namespace jyb {
 using namespace cv;
 
 LabelDetector::LabelDetector() : scaled_height_(400),
-																 tophat_param_{MORPH_ELLIPSE, 0.125, 0.125, 1},
-																 v_thresh_(90),
-																 s_thresh_(130),
-																 median_ksize_ratio_(0.01),
-																 close_param_{MORPH_ELLIPSE, 0.04, 0.04, 1},
-																 open_param_{MORPH_ELLIPSE, 0.075, 0.060, 1},
-																 scale_ratio_(0.0) {}
+                                 tophat_param_{MORPH_ELLIPSE, 0.125, 0.125, 1},
+                                 v_thresh_(90),
+                                 s_thresh_(130),
+                                 median_ksize_ratio_(0.01),
+                                 close_param_{MORPH_ELLIPSE, 0.04, 0.04, 1},
+                                 open_param_{MORPH_ELLIPSE, 0.075, 0.060, 1},
+                                 scale_ratio_(0.0) {}
 
 LabelDetector::~LabelDetector() {}
 
@@ -77,9 +77,9 @@ void LabelDetector::FindLabels(Mat &image, std::vector<Label> &labels)
 	for (std::size_t i = 0; i < boxes.size(); ++i)
 	{
 		Point2f unscaled_center(boxes[i].center.x / scale_ratio_,
-														boxes[i].center.y / scale_ratio_);
+		                        boxes[i].center.y / scale_ratio_);
 		Size2f unscaled_size(boxes[i].size.width / scale_ratio_,
-												 boxes[i].size.height / scale_ratio_);
+		                     boxes[i].size.height / scale_ratio_);
 		RotatedRect unscaled_box(unscaled_center, unscaled_size, boxes[i].angle);
 		unscaled_boxes.push_back(unscaled_box);
 
@@ -244,7 +244,7 @@ inline void LabelDetector::ApplyMorphology(Mat &image, MorphTypes op, MorphParam
 {
 	// TODO: consider cv::cuda::createMorphologyFilter()
 	Size kernel_size(scaled_height_ * param.width_ratio,
-									 scaled_height_ * param.height_ratio);
+	                 scaled_height_ * param.height_ratio);
 	Mat element = getStructuringElement(param.shape, kernel_size);
 	morphologyEx(image, image, op, element);
 }
@@ -253,8 +253,8 @@ inline void LabelDetector::ApplyMorphology(Mat &image, MorphTypes op, MorphParam
 // Draw the rectangles on the scaled image
 // Annotate confidences for each rectangle
 inline void LabelDetector::AnnotateImage(Mat &image,
-																				 const std::vector<RotatedRect> &boxes,
-																				 const std::vector<float> &confidences)
+                                         const std::vector<RotatedRect> &boxes,
+                                         const std::vector<float> &confidences)
 {
 	for (std::size_t i = 0; i < boxes.size(); ++i)
 	{
@@ -264,10 +264,10 @@ inline void LabelDetector::AnnotateImage(Mat &image,
 		double fontscale = scaled_height_ * 0.0015;
 		int thickness = std::max(1, (int)std::round(scaled_height_ * 0.003));
 		// Point center(bounding.x + bounding.width/2,
-		// 						 bounding.y + bounding.height/2);
+		//              bounding.y + bounding.height/2);
 		Point topright(bounding.br().x, bounding.tl().y);
 		putText(image, std::to_string(int(confidences[i] * 100)), topright,
-						FONT_HERSHEY_SIMPLEX, fontscale, Scalar(0,0,255), thickness);
+            FONT_HERSHEY_SIMPLEX, fontscale, Scalar(0,0,255), thickness);
 	}
 }
 

@@ -54,9 +54,8 @@ private:
 	float ComputeConfidence(const cv::Mat &binary_image, const cv::RotatedRect &box);
 	void ApplyMorphology(cv::Mat &image, cv::MorphTypes op, MorphParam param);
 	void AnnotateImage(cv::Mat &image, const std::vector<cv::RotatedRect> &boxes,
-										 const std::vector<float> &confidences);
+	                   const std::vector<float> &confidences);
 	void DrawBox(cv::Mat &image, const cv::RotatedRect &box);
-
 };
 
 } // namespace jyb

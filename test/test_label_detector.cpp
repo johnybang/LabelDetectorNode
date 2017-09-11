@@ -44,8 +44,8 @@ protected:
 	// detected label boxes and the set of truth boxes and the union is the
 	// union of all boxes in both sets. It is a ratio always in the range
 	// 0.0 to 1.0 (unless there's a bug). 1.0 reflects ideal performance.
-  static float ComputeIoU(const std::vector<jyb::LabelDetector::Label> &labels,
-													const std::vector<cv::RotatedRect> &truths)
+	static float ComputeIoU(const std::vector<jyb::LabelDetector::Label> &labels,
+	                        const std::vector<cv::RotatedRect> &truths)
 	{
 		// Accumulates the area of detection boxes.
 		// Converts jyb::LabelDetector::Label to cv::RotatedRect for later.
@@ -135,7 +135,7 @@ private:
 
 	// Performs clockwise angle comparison where positive y axis is "zero" angle.
 	// From SO adapted to be clockwise for positive y down coordinate system:
-  // https://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order
+	// https://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order
 	static bool ClockwiseLessThan(const cv::Point2f &a, const cv::Point2f &b)
 	{
 		if (a.x >= 0 && b.x < 0)

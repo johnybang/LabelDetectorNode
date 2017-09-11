@@ -14,8 +14,8 @@
 #include "label_detector.h" // jyb::LabelDetector::Label
 #include "dynamic_label_detector_node.h"
 
-namespace jyb {
 
+namespace jyb {
 
 static const std::string OPENCV_WINDOW = "label_detector_node Window";
 
@@ -23,7 +23,7 @@ static const std::string OPENCV_WINDOW = "label_detector_node Window";
 DynamicLabelDetectorNode::DynamicLabelDetectorNode() : it_(nh_)
 {
 	image_sub_ = it_.subscribe("/static_image", 1,
-														 &DynamicLabelDetectorNode::imageCb, this);
+	                           &DynamicLabelDetectorNode::imageCb, this);
 	image_pub_ = it_.advertise("/label_detector/output_image", 1);
 	labels_pub_ = nh_.advertise<label_detector::Labels>("/label_detector/labels", 100);
 
