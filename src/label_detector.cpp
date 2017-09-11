@@ -163,7 +163,7 @@ void LabelDetector::ComputeHsvMask(const Mat &image, Mat &mask_image)
 	// Normalize background suppressed V image
 	// TODO: consider cv::cuda::normalize()
 	normalize(hsv[2], hsv[2], 0, 255, NORM_MINMAX, CV_8UC1);
-  DEBUG_PLOT("tophat_norm", hsv[2]);
+	DEBUG_PLOT("tophat_norm", hsv[2]);
 
 	// Threshold background suppressed V image
 	// TODO: consider cv::cuda::threshold()
@@ -219,11 +219,11 @@ float LabelDetector::ComputeConfidence(const Mat &binary_image, const RotatedRec
 	// TODO: consider cv::cuda::warpAffine()
 	warpAffine(patch, patch, M, patch.size()); // cuda?
 
-  // Set roi to the now unrotated rectangle
-  roi.x = patch_box.center.x - (patch_box.size.width / 2);
-  roi.y = patch_box.center.y - (patch_box.size.height / 2);
-  roi.width = patch_box.size.width;
-  roi.height = patch_box.size.height;
+	// Set roi to the now unrotated rectangle
+	roi.x = patch_box.center.x - (patch_box.size.width / 2);
+	roi.y = patch_box.center.y - (patch_box.size.height / 2);
+	roi.width = patch_box.size.width;
+	roi.height = patch_box.size.height;
 	roi &= Rect(0, 0, patch.size().width, patch.size().height);
 
 	// Store total number of pixels
@@ -267,7 +267,7 @@ inline void LabelDetector::AnnotateImage(Mat &image,
 		//              bounding.y + bounding.height/2);
 		Point topright(bounding.br().x, bounding.tl().y);
 		putText(image, std::to_string(int(confidences[i] * 100)), topright,
-            FONT_HERSHEY_SIMPLEX, fontscale, Scalar(0,0,255), thickness);
+		        FONT_HERSHEY_SIMPLEX, fontscale, Scalar(0,0,255), thickness);
 	}
 }
 

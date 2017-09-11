@@ -25,11 +25,11 @@ public:
 	}
 	void readNextRow(std::istream& str)
 	{
-		std::string					line;
+		std::string line;
 		std::getline(str, line);
 
-		std::stringstream		lineStream(line);
-		std::string					cell;
+		std::stringstream lineStream(line);
+		std::string cell;
 
 		m_data.clear();
 		while(std::getline(lineStream, cell, ','))
@@ -44,7 +44,7 @@ public:
 		}
 	}
 private:
-	std::vector<std::string>		m_data;
+	std::vector<std::string> m_data;
 };
 
 } // namespace jyb
